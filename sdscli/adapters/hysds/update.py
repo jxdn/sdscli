@@ -156,6 +156,13 @@ def update_mozart(conf, comp='mozart'):
         execute(fab.send_awscreds, roles=[comp])
         bar.update()
         set_bar_desc(bar, 'Updated mozart')
+        
+        # ship Azure creds
+        set_bar_desc(bar, 'Configuring Azure creds')
+        execute(fab.send_azurecreds, roles=[comp])
+        bar.update()
+        set_bar_desc(bar, 'Updated mozart')
+
 
 
 def update_metrics(conf, comp='metrics'):
@@ -350,6 +357,12 @@ def update_grq(conf, comp='grq'):
         execute(fab.send_awscreds, roles=[comp])
         bar.update()
         set_bar_desc(bar, 'Updated grq')
+        
+        # ship Azure creds
+        set_bar_desc(bar, 'Configuring Azure creds')
+        execute(fab.send_azurecreds, roles=[comp])
+        bar.update()
+        set_bar_desc(bar, 'Updated grq')
 
 
 def update_factotum(conf, comp='factotum'):
@@ -428,6 +441,12 @@ def update_factotum(conf, comp='factotum'):
         # ship AWS creds
         set_bar_desc(bar, 'Configuring AWS creds')
         execute(fab.send_awscreds, roles=[comp])
+        bar.update()
+        set_bar_desc(bar, 'Updated factotum')
+        
+        # ship Azure creds
+        set_bar_desc(bar, 'Configuring Azure creds')
+        execute(fab.send_azurecreds, roles=[comp])
         bar.update()
         set_bar_desc(bar, 'Updated factotum')
 
@@ -513,6 +532,12 @@ def update_verdi(conf, comp='verdi'):
         # ship AWS creds
         set_bar_desc(bar, 'Configuring AWS creds')
         execute(fab.send_awscreds, roles=[comp])
+        bar.update()
+        set_bar_desc(bar, 'Updated verdi')
+        
+        # ship AWS creds
+        set_bar_desc(bar, 'Configuring Azure creds')
+        execute(fab.send_azurecreds, roles=[comp])
         bar.update()
         set_bar_desc(bar, 'Updated verdi')
 
@@ -625,6 +650,7 @@ def ship_verdi(conf, encrypt=False):
                 execute(fab.cp_rp_exists, '~/.boto', '~/verdi/ops/creds/', roles=[comp])
                 execute(fab.cp_rp_exists, '~/.s3cfg', '~/verdi/ops/creds/', roles=[comp])
                 execute(fab.cp_rp_exists, '~/.aws', '~/verdi/ops/creds/', roles=[comp])
+                execute(fab.cp_rp_exists, '~/.azure_credentials.json', '~/verdi/ops/creds/', roles=[comp])
                 proj_bar.update()
 
                 # send work directory stylesheets
