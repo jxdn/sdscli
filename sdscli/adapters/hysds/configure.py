@@ -108,6 +108,14 @@ DAV_SERVER: {DAV_SERVER}
 DAV_USER: {DAV_USER}
 DAV_PASSWORD: {DAV_PASSWORD}
 
+# Azure settings
+
+AZURE_CLIENT_ID: {AZURE_CLIENT_ID}
+AZURE_CLIENT_SECRET_KEY: {AZURE_CLIENT_SECRET_KEY}
+AZURE_SUBSCRIPTION_ID: {AZURE_SUBSCRIPTION_ID}
+AZURE_TENANT_ID: {AZURE_TENANT_ID}
+AZURE_RESOURCE_GROUP: {AZURE_RESOURCE_GROUP}
+
 # AWS settings for product bucket
 DATASET_AWS_ACCESS_KEY: {DATASET_AWS_ACCESS_KEY}
 DATASET_AWS_SECRET_KEY: {DATASET_AWS_SECRET_KEY}
@@ -244,6 +252,14 @@ CFG_DEFAULTS = {
         [ "DAV_SERVER", ""],
         [ "DAV_USER", ""],
         [ "DAV_PASSWORD", ""],
+    ],
+    
+    "azure": [
+        [ "AZURE_CLIENT_ID", ""],
+        [ "AZURE_CLIENT_SECRET_KEY", ""],
+        [ "AZURE_SUBSCRIPTION_ID", ""],
+        [ "AZURE_TENANT_ID", ""],
+        [ "AZURE_RESOURCE_GROUP", "southeastasia"],
     ],
     
     "aws-dataset": [
@@ -538,6 +554,35 @@ def configure():
                        style=prompt_style)
         cfg[k] = v
 
+    # azure
+    for k, d in CFG_DEFAULTS['azure']:
+        if k == 'AZURE_CLIENT_SECRET_KEY':
+            while True:
+                p1 = prompt(get_prompt_tokens=lambda x: [(Token, "Enter Azure secret key for "),
+                                                        (Token.Username, "%s" % cfg['AZURE_CLIENT_ID']), 
+                                                        (Token, ": ")],
+                           default=unicode(cfg.get(k, d)),
+                           style=prompt_style,
+                           is_password=True)
+                p2 = prompt(get_prompt_tokens=lambda x: [(Token, "Re-enter Azure secret key for "),
+                                                        (Token.Username, "%s" % cfg['AZURE_CLIENT_ID']), 
+                                                        (Token, ": ")],
+                           default=unicode(cfg.get(k, d)),
+                           style=prompt_style,
+                           is_password=True)
+                if p1 == p2:
+                    v = p1
+                    break
+                print("Keys don't match.")
+        else:
+            v = prompt(get_prompt_tokens=lambda x: [(Token, "Enter value for "),
+                                                    (Token.Param, "%s" % k), 
+                                                    (Token, ": ")],
+                       default=unicode(cfg.get(k, d)),
+                       style=prompt_style)
+        cfg[k] = v
+
+    
     # aws-dataset
     for k, d in CFG_DEFAULTS['aws-dataset']:
         if k == 'DATASET_AWS_SECRET_KEY':
