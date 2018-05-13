@@ -44,7 +44,9 @@ sed "s/__IPADDRESS_ETH0__/$IPADDRESS_ETH0/g" $HOME/verdi/etc/supervisord.conf.tm
 
 # move creds
 rm -rf $HOME/.aws
+rm -rf $HOME/.azure
 mv -f $BASE_PATH/creds/.aws $HOME/
+mv -f $BASE_PATH/creds/.azure $HOME/
 rm -rf $HOME/.boto; mv -f $BASE_PATH/creds/.boto $HOME/
 rm -rf $HOME/.s3cfg; mv -f $BASE_PATH/creds/.s3cfg $HOME/
 rm -rf $HOME/.netrc; mv -f $BASE_PATH/creds/.netrc $HOME/; chmod 600 $HOME/.netrc
