@@ -182,6 +182,7 @@ def import_pkg(args):
     logger.debug("manifest: {}".format(json.dumps(manifest, indent=2, sort_keys=True)))
 
     # get code bucket
+    """ this need to be generalized """
     code_bucket = conf.get('CODE_BUCKET')
     code_bucket_url = "s3://{}/{}".format(conf.get('S3_ENDPOINT'), code_bucket)
     logger.debug("code_bucket: {}".format(code_bucket))
