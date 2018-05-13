@@ -72,6 +72,14 @@ class Ec2InstanceTypeValidator(Validator):
         if not match:
             raise ValidationError(message='Input needs to be EC2 instance type',
                                   cursor_position=len(text))
+            
+class AZInstanceTypeValidator(Validator):
+    def validate(self, document):
+        text = document.text.lower()
+        match = re.search(r'^\s*\w+\.\w+\s*$', text)
+        if not match:
+            raise ValidationError(message='Input needs to be Azure instance type',
+                                  cursor_position=len(text))
 
 
 class PriceValidator(Validator):
