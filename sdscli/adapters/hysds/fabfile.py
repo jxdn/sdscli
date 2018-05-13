@@ -609,6 +609,8 @@ def add_ci_job(repo, proto, uid=1001, gid=1001, branch=None, release=False):
         elif proto in ('dav', 'davs'):
             ctx['STORAGE_URL'] = "%s://%s:%s@%s/repository/products/containers/" % \
                                  (proto, ctx['DAV_USER'], ctx['DAV_PASSWORD'], ctx['DAV_SERVER'])
+        elif proto == 'az':
+            ctx['STORAGE_URL'] = "%s://%s/%s/" % (proto, ctx['AZ_ENDPOINT'], ctx['CODE_BUCKET'])
         else:
             raise RuntimeError("Unrecognized storage type for containers: %s" % proto)
         upload_template(config_tmpl, "tmp-jenkins-upload", use_jinja=True, context=ctx,
@@ -791,6 +793,15 @@ def send_awscreds():
     upload_template('s3cfg', '.s3cfg', use_jinja=True, context=ctx,
                     template_dir=get_user_files_path())
     run('chmod 600 .s3cfg')
+    
+def send_azurecreds():
+    ctx = get_context()
+    if exists('.azure'): run('rm -rf .azure')
+    mkdir('.azure', context['OPS_USER'], context['OPS_USER'])
+    run('chmod 700 .azure')
+    upload_template('azure_credentials', '.azure/azure_credentials.json', use_jinja=True, context=ctx,
+                    template_dir=get_user_files_path())
+    run('chmod 600 .azure/*')
 
 
 ##########################
@@ -811,6 +822,8 @@ def send_project_config(project):
 ##########################
 # ship s3-bucket style
 ##########################
+
+""" this need to be modified to support azure """
 
 def ship_style(bucket=None, encrypt=False):
     ctx = get_context()
