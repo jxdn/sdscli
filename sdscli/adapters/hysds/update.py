@@ -650,7 +650,7 @@ def ship_verdi(conf, encrypt=False):
                 execute(fab.cp_rp_exists, '~/.boto', '~/verdi/ops/creds/', roles=[comp])
                 execute(fab.cp_rp_exists, '~/.s3cfg', '~/verdi/ops/creds/', roles=[comp])
                 execute(fab.cp_rp_exists, '~/.aws', '~/verdi/ops/creds/', roles=[comp])
-                execute(fab.cp_rp_exists, '~/.azure_credentials.json', '~/verdi/ops/creds/', roles=[comp])
+                execute(fab.cp_rp_exists, '~/.azure', '~/verdi/ops/creds/', roles=[comp])
                 proj_bar.update()
 
                 # send work directory stylesheets
